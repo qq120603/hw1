@@ -1,0 +1,1 @@
+python trader.py --training training_data.csv --testing testing_data.csv --output output.csv
