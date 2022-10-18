@@ -67,20 +67,23 @@ for i in range(len(prediction)):
         action[i] = 1
     elif i == 0 and prediction[i] == 0:
         action[i] = -1
-    # 前一天跌 當天漲 還能買就買
+
     else:
-        if i != 0 and prediction[i-1] == 0 and prediction[i] == 1 and sum(action) <= 1 and sum(action) > -1:
+        # 前一天跌 當天漲 還能買就買
+        if prediction[i-1] == 0 and prediction[i] == 1 and sum(action) < 1 and sum(action) >= -1:
             action[i] = 1
-        else:
-            action[i] = 0
-    # 前一天漲 當天跌 還能賣就賣
-        if i != 0 and prediction[i-1] == 1 and prediction[i] == 1 and sum(action) <= 1 and sum(action) > -1:
+        # 前一天漲 當天跌 還能賣就賣
+        elif prediction[i-1] == 1 and prediction[i] == 1 and sum(action) <= 1 and sum(action) > -1:
             action[i] = -1
+        # 連續漲或跌都不動
         else:
             action[i] = 0
-    # 連續漲或跌都不動
+
 
 # 寫檔案
 with open(args.output, 'w') as f:
-    for a in action:
-        f.write(str(a)+'\n')
+    for a in range(len(action)):
+        if (a != len(action)-1):
+            f.write(str(action[a])+'\n')
+        else:
+            f.write(str(action[a]))
